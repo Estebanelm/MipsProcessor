@@ -107,4 +107,16 @@ Concatenador Concatenador(
 	salidaPC,
 	salidaConcatenador
 );
+
+wire Zero;
+reg PCWriteCond = 0;
+reg PCWrite = 0;
+wire selPC;
+LogicaCombinacionalPC LogicaSelPC(
+	Zero,
+	PCWriteCond,
+	PCWrite,
+	selPC
+);
+
 endmodule

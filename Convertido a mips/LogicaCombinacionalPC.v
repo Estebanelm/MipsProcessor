@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    16:14:22 06/03/2017 
+// Create Date:    16:23:00 06/03/2017 
 // Design Name: 
-// Module Name:    Concatenador 
+// Module Name:    LogicaCombinacionalPC 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,18 +18,19 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Concatenador(
-    input [27:0] salidaShiftLeft,
-    input [31:0] salidaPC,
-    output reg [31:0] salida
+module LogicaCombinacionalPC(
+    input Zero,
+    input PCWriteCond,
+    input PCWrite,
+    output reg selPC
     );
 
 	initial begin
-		salida = 32'b0;
+		selPC = 0;
 	end
-
+	
 	always @ (*) begin
-		salida = {salidaPC[31:28], salidaShiftLeft};
+		selPC = (Zero && PCWriteCond) || PCWrite;
 	end
-
+	
 endmodule
