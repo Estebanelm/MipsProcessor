@@ -80,15 +80,31 @@ Mux32bits4entradas MuxALUSrcB(
 
 reg [1:0] PCSource = 0;
 wire [31:0] ALUResult;
-wire [31:0] salidaShiftLeft26;
+wire [31:0] salidaConcatenador;
 wire [31:0] entradaPC;
 Mux32bits4entradas MuxPCSource(
 	PCSource,
 	ALUResult,
 	salidaALUOut,
-	salidaShiftLeft26,
+	salidaConcatenador,
 	entradaPC
 );
 
+reg MemRead = 0;
+reg MemWrite = 0;
+wire MemData;
+Memory Memory(
+	MemRead,
+	MemWrite,
+	Address,
+	salidaRegisterB,
+	MemData
+);
 
+wire salidaShiftLeft26;
+Concatenador Concatenador(
+   salidaShiftLeft26,
+	salidaPC,
+	salidaConcatenador
+);
 endmodule
