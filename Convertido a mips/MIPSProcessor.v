@@ -110,13 +110,17 @@ Concatenador Concatenador(
 
 wire Zero;
 wire PCWriteCond;
+wire PCWriteCondN;
 wire PCWrite;
 wire selPC;
+wire selPCN;
 LogicaCombinacionalPC LogicaSelPC(
 	Zero,
 	PCWriteCond,
+	PCWriteCondN,
 	PCWrite,
-	selPC
+	selPC,
+	selPCN
 );
 
 wire [3:0] salidaALUcontrol;

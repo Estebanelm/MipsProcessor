@@ -21,16 +21,20 @@
 module LogicaCombinacionalPC(
     input Zero,
     input PCWriteCond,
+	 input PCWriteCondN,
     input PCWrite,
-    output reg selPC
+    output reg selPC,
+	 output reg selPCN
     );
 
 	initial begin
 		selPC <= 0;
+		selPCN <= 0;
 	end
 	
 	always @ (*) begin
 		selPC <= (Zero & PCWriteCond) | PCWrite;
+		selPCN <= (!Zero & PCWriteCondN);
 	end
 	
 endmodule
