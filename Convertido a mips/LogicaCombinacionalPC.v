@@ -30,7 +30,7 @@ module LogicaCombinacionalPC(
 	end
 	
 	always @ (*) begin
-		selPC = (Zero && PCWriteCond) || PCWrite;
+		selPC = (Zero & PCWriteCond) | PCWrite;
 	end
 	
 endmodule

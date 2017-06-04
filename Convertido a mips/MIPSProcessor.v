@@ -119,4 +119,14 @@ LogicaCombinacionalPC LogicaSelPC(
 	selPC
 );
 
+wire [3:0] ALUcontrol;
+wire [31:0] salidaALU;
+ALU ALU(
+	entradaALU1,
+	entradaALU2,
+	ALUcontrol,
+	Zero,
+	salidaALU
+);
+
 endmodule
