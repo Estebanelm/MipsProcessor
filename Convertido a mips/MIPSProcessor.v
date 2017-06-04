@@ -22,7 +22,7 @@ module MIPSProcessor(
     input clk
     );
 
-reg RegDst = 0;
+wire RegDst;
 wire [4:0] Instruction2016;
 wire [4:0] Instruction1511;
 wire [4:0] WriteRegister;
@@ -44,7 +44,7 @@ Mux32bits2entradas MuxIorD(
    Address
 );
 	
-reg MemtoReg = 0;
+wire MemtoReg;
 wire [31:0] salidaMemorydataregister;
 wire [31:0] WriteData;
 Mux32bits2entradas MuxMemtoReg(
@@ -54,7 +54,7 @@ Mux32bits2entradas MuxMemtoReg(
 	WriteData
 );
 
-reg ALUSrcA = 0;
+wire ALUSrcA;
 wire [31:0] salidaRegisterA;
 wire [31:0] entradaALU1;
 Mux32bits2entradas MuxALUSrcA(
@@ -64,7 +64,7 @@ Mux32bits2entradas MuxALUSrcA(
 	entradaALU1
 );
 
-reg [1:0] ALUSrcB = 0;
+wire [1:0] ALUSrcB;
 wire [31:0] salidaRegisterB;
 reg [31:0] registerBnum4 = 32'b00000000000000000000000000000100;
 wire [31:0] salidaSignExtend;
@@ -78,7 +78,7 @@ Mux32bits4entradas MuxALUSrcB(
 	entradaALU2
 );
 
-reg [1:0] PCSource = 0;
+wire [1:0] PCSource;
 wire [31:0] ALUResult;
 wire [31:0] salidaConcatenador;
 wire [31:0] entradaPC;
@@ -90,8 +90,8 @@ Mux32bits4entradas MuxPCSource(
 	entradaPC
 );
 
-reg MemRead = 0;
-reg MemWrite = 0;
+wire MemRead;
+wire MemWrite;
 wire MemData;
 Memory Memory(
 	MemRead,
@@ -109,8 +109,8 @@ Concatenador Concatenador(
 );
 
 wire Zero;
-reg PCWriteCond = 0;
-reg PCWrite = 0;
+wire PCWriteCond;
+wire PCWrite;
 wire selPC;
 LogicaCombinacionalPC LogicaSelPC(
 	Zero,
@@ -119,14 +119,42 @@ LogicaCombinacionalPC LogicaSelPC(
 	selPC
 );
 
-wire [3:0] ALUcontrol;
+wire [3:0] salidaALUcontrol;
 wire [31:0] salidaALU;
 ALU ALU(
 	entradaALU1,
 	entradaALU2,
-	ALUcontrol,
+	salidaALUcontrol,
 	Zero,
 	salidaALU
+);
+
+wire [31:0] Instruction;
+wire [1:0] ALUOp;
+ALUcontrol ALUcontrol(
+	Instruction[5:0],
+	ALUOp,
+	salidaALUcontrol
+);
+
+wire IRWrite;
+wire RegWrite;
+Control Control(
+	clk,
+	Instruction[31:26],
+	PCWriteCond,
+	PCWrite,
+	IorD,
+	MemRead,
+	MemWrite,
+	MemtoReg,
+	IRWrite,
+	PCSource,
+	ALUOp,
+	ALUSrcB,
+	ALUSrcA,
+	RegWrite,
+	RegDst
 );
 
 endmodule

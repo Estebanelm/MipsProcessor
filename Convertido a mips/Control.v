@@ -20,7 +20,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Control(
 	 input clk,
-    input [4:0] Op
+    input [4:0] Op,
+	 output reg PCWriteCond,
+	 output reg PCWrite,
+	 output reg IorD,
+	 output reg MemRead,
+	 output reg MemWrite,
+	 output reg MemtoReg,
+	 output reg IRWrite,
+	 output reg [1:0] PCSource,
+	 output reg [1:0] ALUOp,
+	 output reg [1:0] ALUSrcB,
+	 output reg ALUSrcA,
+	 output reg RegWrite,
+	 output reg RegDst
     );
 
 

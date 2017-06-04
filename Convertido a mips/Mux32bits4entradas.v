@@ -27,20 +27,20 @@ module Mux32bits4entradas(
     output reg [31:0] salida
     );
 
-	initial begin salida = 32'b0; end
+	initial begin salida <= 32'b0; end
 	
 	always @ (*) begin
 		case(sel)
 			0:
-				salida = entradaA;
+				salida <= entradaA;
 			1: 
-				salida = entradaB;
+				salida <= entradaB;
 			2:
-				salida = entradaC;
+				salida <= entradaC;
 			3:
-				salida = entradaD;
+				salida <= entradaD;
 			default:
-				salida = entradaD;
+				salida <= entradaD;
 		endcase
 	end
 	

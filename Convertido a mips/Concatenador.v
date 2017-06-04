@@ -25,11 +25,11 @@ module Concatenador(
     );
 
 	initial begin
-		salida = 32'b0;
+		salida <= 32'b0;
 	end
 
 	always @ (*) begin
-		salida = {salidaPC[31:28], salidaShiftLeft};
+		salida <= {salidaPC[31:28], salidaShiftLeft};
 	end
 
 endmodule

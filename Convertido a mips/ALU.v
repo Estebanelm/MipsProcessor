@@ -74,6 +74,7 @@ module ALU(
 			end
 		default:
 			begin
+				ALUresult <= 0;
 			end
 		endcase
 	end

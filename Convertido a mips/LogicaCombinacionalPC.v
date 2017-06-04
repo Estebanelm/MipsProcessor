@@ -26,11 +26,11 @@ module LogicaCombinacionalPC(
     );
 
 	initial begin
-		selPC = 0;
+		selPC <= 0;
 	end
 	
 	always @ (*) begin
-		selPC = (Zero & PCWriteCond) | PCWrite;
+		selPC <= (Zero & PCWriteCond) | PCWrite;
 	end
 	
 endmodule

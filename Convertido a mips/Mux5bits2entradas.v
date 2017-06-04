@@ -25,13 +25,13 @@ module Mux5bits2entradas(
     input [4:0] Instruction1511
     );
 
-	initial begin WriteRegister = 5'b0; end
+	initial begin WriteRegister <= 5'b0; end
 
 	always @ (*) begin
 		if (~RegDst)
-			WriteRegister = Instruction2016;
+			WriteRegister <= Instruction2016;
 		else
-			WriteRegister = Instruction1511;
+			WriteRegister <= Instruction1511;
 	end
 	
 

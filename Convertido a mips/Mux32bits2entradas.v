@@ -25,13 +25,13 @@ module Mux32bits2entradas(
     output reg [31:0] salida
     );
 
-	initial begin salida = 32'b0; end
+	initial begin salida <= 32'b0; end
 	
 	always @ (*) begin
 		if (~sel)
-			salida = entradaA;
+			salida <= entradaA;
 		else
-			salida = entradaB;
+			salida <= entradaB;
 	end
 
 

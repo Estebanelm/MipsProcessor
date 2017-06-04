@@ -31,17 +31,17 @@ module Memory(
 	integer i = 0;
 	initial begin 
 		for (i=0;i<200;i=i+1)
-			block[i] = 32'b0;
-		MemData = 32'b0;
+			block[i] <= 32'b0;
+		MemData <= 32'b0;
 	end
 
 	always @ (*) begin
 		if (MemRead)
-			MemData = block[Address];
+			MemData <= block[Address];
 		else if (MemWrite)
-			block[Address] = WriteData;
+			block[Address] <= WriteData;
 		else
-			MemData = 32'b0;
+			MemData <= 32'b0;
 	end
 
 endmodule
