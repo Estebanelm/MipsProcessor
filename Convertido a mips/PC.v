@@ -13,10 +13,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-module PC(PCNext, PCResult, Reset, Clk,PCWrite);
+module PC(Clk, Reset, PCNext, PCWrite, PCWriteN, PCResult);
 
 	input [31:0] PCNext;
-	input Reset, Clk,PCWrite;
+	input Reset, Clk, PCWrite, PCWriteN;
 	output reg [31:0]  PCResult;
 
 	initial begin
@@ -32,7 +32,7 @@ module PC(PCNext, PCResult, Reset, Clk,PCWrite);
     	end
     	else
     	begin
-			if (PCWrite == 1) 
+			if (PCWrite || PCWriteN) 
 			begin
 				PCResult <= PCNext;
 			end

@@ -19,18 +19,18 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module MIPSProcessor(
-    input clk
+    input clk,
+	 input rst
     );
 
 wire RegDst;
-wire [4:0] Instruction2016;
-wire [4:0] Instruction1511;
+wire [31:0] Instruction;
 wire [4:0] WriteRegister;
 Mux5bits2entradas MuxRegDst(
 	RegDst,
 	WriteRegister,
-	Instruction2016,
-	Instruction1511
+	Instruction[20:16],
+	Instruction[15:11]
 );
 
 wire IorD;
@@ -92,7 +92,7 @@ Mux32bits4entradas MuxPCSource(
 
 wire MemRead;
 wire MemWrite;
-wire MemData;
+wire [31:0] MemData;
 Memory Memory(
 	MemRead,
 	MemWrite,
@@ -101,7 +101,7 @@ Memory Memory(
 	MemData
 );
 
-wire salidaShiftLeft26;
+wire [27:0] salidaShiftLeft26;
 Concatenador Concatenador(
    salidaShiftLeft26,
 	salidaPC,
@@ -133,8 +133,7 @@ ALU ALU(
 	salidaALU
 );
 
-wire [31:0] Instruction;
-wire [1:0] ALUOp;
+wire [2:0] ALUOp;
 ALUcontrol ALUcontrol(
 	Instruction[5:0],
 	ALUOp,
@@ -147,6 +146,7 @@ Control Control(
 	clk,
 	Instruction[31:26],
 	PCWriteCond,
+	PCWriteCondN,
 	PCWrite,
 	IorD,
 	MemRead,
@@ -159,6 +159,33 @@ Control Control(
 	ALUSrcA,
 	RegWrite,
 	RegDst
+);
+
+PC PC(
+	clk,
+	rst,
+	entradaPC,
+	PCWrite,
+	PCWriteN,
+	salidaPC
+);
+
+wire [31:0] ReadData1;
+wire [31:0] ReadData2;
+Registers Registers(
+	clk,
+	Instruction[25:21],
+	Instruction[20:16],
+	WriteRegister,
+	WriteData,
+	RegWrite,
+	ReadData1,
+	ReadData2
+);
+
+SignExtend SignExtend(
+	//Instruction[15:0],
+	//salidaSignExtend
 );
 
 endmodule

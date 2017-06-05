@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module ALUcontrol(
     input [5:0] func,
-    input [1:0] ALUOp,
+    input [2:0] ALUOp,
     output reg [3:0] salida
     );
 
@@ -54,6 +54,18 @@ module ALUcontrol(
 								salida <= 4'b0111;
 							end
 					endcase
+				end
+			3'b100:
+				begin
+					salida <= 4'b0010;
+				end
+			3'b101:
+				begin
+					salida <= 4'b0000;
+				end
+			3'b110:
+				begin
+					salida <= 4'b0001;
 				end
 			default:	begin
 					salida <= 4'b1111;

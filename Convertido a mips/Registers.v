@@ -18,7 +18,7 @@
 // ReadData2: 32-Bit registered output. 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Registers(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2);
+module Registers(Clk, ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, ReadData1, ReadData2);
 
 
 	input [4:0] ReadRegister1,ReadRegister2,WriteRegister;

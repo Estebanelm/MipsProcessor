@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Control(
 	 input clk,
-    input [4:0] Op,
+    input [5:0] Op,
 	 output reg PCWriteCond,
 	 output reg PCWriteCondN,
 	 output reg PCWrite,
@@ -30,7 +30,7 @@ module Control(
 	 output reg MemtoReg,
 	 output reg IRWrite,
 	 output reg [1:0] PCSource,
-	 output reg [1:0] ALUOp,
+	 output reg [2:0] ALUOp,
 	 output reg [1:0] ALUSrcB,
 	 output reg ALUSrcA,
 	 output reg RegWrite,
@@ -40,6 +40,7 @@ module Control(
 	parameter Instructionfetch=0, Instructiondecode=1, Memoryaddresscomp=2;
 	parameter Memoryaccess1=3, Memoryread=4, Memoryaccess2=5, Execution=6;
 	parameter Rtypecompletion=7, Branchcompletion=8, Jumpcompletion=9;
+	parameter ImmExecution=10;
 	reg [3:0] EstadoActual;
 
 	initial begin
@@ -51,7 +52,7 @@ module Control(
 		MemtoReg <= 1;
 	   IRWrite <= 0;
 	   PCSource <= 2'b11;
-	   ALUOp <= 2'b11;
+	   ALUOp <= 3'b011;
 	   ALUSrcB <= 2'b11;
 		ALUSrcA <= 1;
 		RegWrite <= 0;
@@ -72,7 +73,7 @@ module Control(
 						IorD <= 0;
 						IRWrite <= 1;
 						ALUSrcB <= 2'b01;
-						ALUOp <= 2'b00;
+						ALUOp <= 3'b000;
 						PCWrite <= 1;
 						PCSource <= 2'b00;
 						EstadoActual <= Instructiondecode;
@@ -83,17 +84,19 @@ module Control(
 						IRWrite <= 0;
 						PCWrite <= 0;
 						ALUSrcA <= 0;
-						ALUSrcA <= 2'b11;
-						ALUOp <= 2'b00;
+						ALUSrcB <= 2'b11;
+						ALUOp <= 3'b000;
 						case(Op)
 							0: //Tipo R
 								EstadoActual <= Execution;
-							2'h23, 2'h2b: //sw o lw
+							6'b100111, 6'b101011: //lw o sw
 								EstadoActual <= Memoryaddresscomp;
 							4, 5: //Beq o bne
 								EstadoActual <= Branchcompletion;
 							2: //jump
 								EstadoActual <= Jumpcompletion;
+							8, 6'b001100, 6'b001101: //addi, andi, ori
+								EstadoActual <= ImmExecution;
 							default:
 								EstadoActual <= Instructionfetch;
 						endcase
@@ -102,10 +105,10 @@ module Control(
 					begin
 						ALUSrcA <= 1;
 						ALUSrcB <= 2'b10;
-						ALUOp <= 2'b00;
-						if (Op == 2'h23) //lw
+						ALUOp <= 3'b000;
+						if (Op == 6'b100111) //lw
 							EstadoActual <= Memoryaccess1;
-						else if (Op == 2'h2b) //sw
+						else if (Op == 6'b101011) //sw
 							EstadoActual <= Memoryaccess2;
 					end
 				Memoryaccess1:
@@ -132,7 +135,7 @@ module Control(
 					begin
 						ALUSrcA <= 1;
 						ALUSrcB <= 2'b00;
-						ALUOp <= 10;
+						ALUOp <= 3'b010;
 						EstadoActual <= Rtypecompletion;
 					end
 				Rtypecompletion:
@@ -146,7 +149,7 @@ module Control(
 					begin
 						ALUSrcA <= 1;
 						ALUSrcB <= 2'b00;
-						ALUOp <= 2'b01;
+						ALUOp <= 3'b001;
 						PCSource <= 2'b01;
 						EstadoActual <= Instructionfetch;
 						if (Op == 4)
@@ -159,6 +162,18 @@ module Control(
 						PCWrite <= 1;
 						PCSource <= 2'b10;
 						EstadoActual <= Instructionfetch;
+					end
+				ImmExecution:
+					begin
+						ALUSrcA <= 1;
+						ALUSrcB <= 2'b10;
+						EstadoActual <= Rtypecompletion;
+						if (Op == 8)
+							ALUOp <= 3'b100;
+						else if (Op == 6'b001100)
+							ALUOp <= 3'b101;
+						else if (Op == 6'b001101)
+							ALUOp <= 3'b110;
 					end
 			endcase
 	end
