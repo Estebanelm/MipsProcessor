@@ -16,12 +16,11 @@ module ShiftLeft26(in, out, Clk);
 	input Clk;
 	output [27:0]out;
 
-	reg [27:0] r_reg, r_next;
+	reg [27:0] r_reg;
 	
 	always @ (posedge Clk)
 		begin
 			r_reg = in << 2;
-			//r_next = {r_reg[31:0], in};
 		end
 	assign out = r_reg;
 	
