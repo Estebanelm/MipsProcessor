@@ -19,30 +19,25 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module SignExtend(out, in,ExtendSign);
+module SignExtend(in, out);
 	 
 	 /* A 32-Bit output word */
-    output  [31:0] out;
+    output reg  [31:0] out;
     
     /* A 16-Bit input word */
     input   [15:0] in;
-	 input ExtendSign;
-	 reg [31:0] out;
 
-    always@(in,ExtendSign)
+	 initial begin
+		out <= 32'b00000000000000000000000000000000;
+	 end
+
+    always @(*)
 	 begin
-		if (ExtendSign == 0) begin
-			out <= {16'h0000 , in};
+		if (in[15] == 0) begin
+			out <= {16'b0000000000000000 , in};
 		end else begin
-			if (in[15]==1)
-			begin
-			  out <= {16'hffff , in};
+			 out <= {16'b1111111111111111 , in};
 			end
-			else 
-			begin
-			  out <= in;
-			end
-		end
 	 end
 
 endmodule

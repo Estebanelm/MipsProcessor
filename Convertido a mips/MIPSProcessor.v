@@ -72,6 +72,7 @@ wire [31:0] salidaShiftLeft32;
 wire [31:0] entradaALU2;
 Mux32bits4entradas MuxALUSrcB(
 	ALUSrcB,
+	salidaRegisterB,
 	registerBnum4,
 	salidaSignExtend,
 	salidaShiftLeft32,
@@ -79,14 +80,16 @@ Mux32bits4entradas MuxALUSrcB(
 );
 
 wire [1:0] PCSource;
-wire [31:0] ALUResult;
 wire [31:0] salidaConcatenador;
 wire [31:0] entradaPC;
+wire [31:0] salidaALU;
+reg [31:0] num0 = 32'b00000000000000000000000000000000;
 Mux32bits4entradas MuxPCSource(
 	PCSource,
-	ALUResult,
+	salidaALU,
 	salidaALUOut,
 	salidaConcatenador,
+	num0,
 	entradaPC
 );
 
@@ -124,7 +127,6 @@ LogicaCombinacionalPC LogicaSelPC(
 );
 
 wire [3:0] salidaALUcontrol;
-wire [31:0] salidaALU;
 ALU ALU(
 	entradaALU1,
 	entradaALU2,
@@ -165,8 +167,8 @@ PC PC(
 	clk,
 	rst,
 	entradaPC,
-	PCWrite,
-	PCWriteN,
+	selPC,
+	selPCN,
 	salidaPC
 );
 
@@ -184,8 +186,49 @@ Registers Registers(
 );
 
 SignExtend SignExtend(
-	//Instruction[15:0],
-	//salidaSignExtend
+	Instruction[15:0],
+	salidaSignExtend
+);
+
+Register32bitsconEn Instructionregister(
+	clk,
+	MemData,
+	IRWrite,
+	Instruction
+);
+
+Register32bitssinEn Memorydataregister(
+	clk,
+	MemData,
+	salidaMemorydataregister
+);
+
+ShiftLeft32 Shiftleft32(
+	salidaSignExtend,
+	salidaShiftLeft32
+);
+
+Register32bitssinEn A(
+	clk,
+	ReadData1,
+	salidaRegisterA
+);
+
+Register32bitssinEn B(
+	clk,
+	ReadData2,
+	salidaRegisterB
+);
+
+Register32bitssinEn ALUOut(
+	clk,
+	salidaALU,
+	salidaALUOut
+);
+
+ShiftLeft26 Shiftlef26(
+	Instruction[25:0],
+	salidaShiftLeft26
 );
 
 endmodule

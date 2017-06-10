@@ -10,18 +10,18 @@
 // Target Devices: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module ShiftLeft26(in, out, Clk);
+module ShiftLeft26(in, out);
 
 	input [25:0]in;
-	input Clk;
-	output [27:0]out;
-
-	reg [27:0] r_reg;
+	output reg [27:0] out;
 	
-	always @ (posedge Clk)
+	initial begin
+		out <= 28'b0000000000000000000000000000;
+	end
+	
+	always @ (*)
 		begin
-			r_reg = in << 2;
+			out <= in << 2;
 		end
-	assign out = r_reg;
 	
 endmodule 

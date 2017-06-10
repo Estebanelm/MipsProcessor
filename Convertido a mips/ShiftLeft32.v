@@ -13,18 +13,18 @@
 //
 //
 //////////////////////////////////////////////////////////////////////////////////
-module ShiftLeft32(in, out, Clk);
+module ShiftLeft32(in, out);
 
 	input [31:0]in;
-	input Clk;
-	output [31:0]out;
+	output reg [31:0]out;
 
-	reg [31:0] r_reg;
+	initial begin
+		out <= 32'b00000000000000000000000000000000;
+	end
 	
-	always @ (posedge Clk)
+	always @ (*)
 		begin
-			r_reg = in << 2;
+			out <= in << 2;
 		end
-	assign out = r_reg;
 	
 endmodule 
