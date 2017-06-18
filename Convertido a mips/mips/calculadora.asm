@@ -2,7 +2,7 @@
 #$a0: operando 1
 #$a1: operando 2
 #$a2: operacion
-#$a3: display
+#$a3: resultado
 #t2: bandera de que se tiene la respuesta
 
 #Códigos de operación:
@@ -75,15 +75,21 @@ procesarop:
 	beq $s4, $a2, opnand #ir a op
 	beq $s5, $a2, opnor #ir a op
 	beq $s6, $a2, opxor #ir a op
-	beq $s7, $a2, opxnor #ir a xnor
+	beq $s7, $a2, opxor #ir a xnor
 	#si no corresponde a ninguna operación, devolver el programa al inicio
 	sw $zero, 35($zero) #se devuelve a 0 la operacion
 	sw $zero, 37($zero) #se devuelve a 0 la bandera del op2
 	j esperaoperacion
 
 suma:
-
+	add $a3, $a0, $a1 #realiza suma
+	j mostrarresultado
+	
 resta:
+	nor $a1, $a1, $zero #algoritmo de resta
+	addi $a1, $a1, 1
+	add $a3, $a0, $a1
+	j mostrarresultado
 
 multiplicacion:
 
@@ -94,24 +100,42 @@ sen:
 cos:
 
 opand:
-
+	and $a3, $a0, $a1 #realiza AND
+	j mostrarresultado
+	
 opor:
-
+	or $a3, $a0, $a1 #realiza OR
+	j mostrarresultado
+	
 opnot:
+	not $a3, $a0 #realiza NOT
+	j mostrarresultado
 
 opnand:
+	and $a3, $a0, $a1 #realiza AND
+	nor $a3, $a3, $zero #invierte el resultado
+	j mostrarresultado
 
 opnor:
-
-opnand:
-
-opnor:
+	nor $a3, $a0, $a1 #realiza NOR
+	j mostrarresultado
 
 opxor:
+	and $t0, $a0, $a1 #realiza AND
+	nor $t0, $t0, $zero #invierte el resultado
+	or $a3, $a0, $a1 #realizar OR
+	and $a3, $a3, $t0 #completa la XOR con un AND
+	beq $s7, $a2, opxnor #ir a xnor
+	j mostrarresultado
 
 opxnor:
+	nor $a3, $a3, $zero #inverte el resultado de la xor
 
-
+mostrarresultado:
+	sw $zero, 35($zero) #se devuelve a 0 la operacion
+	sw $zero, 37($zero) #se devuelve a 0 la bandera del op2
+	addi $t2, $zero, 1 #subir bandera de mostrar resultado
+	j esperaoperacion
 	
 	
 	
