@@ -66,7 +66,7 @@ Mux32bits2entradas MuxALUSrcA(
 
 wire [1:0] ALUSrcB;
 wire [31:0] salidaRegisterB;
-reg [31:0] registerBnum4 = 32'b00000000000000000000000000000100;
+reg [31:0] registerBnum4 = 32'b00000000000000000000000000000001;
 wire [31:0] salidaSignExtend;
 wire [31:0] salidaShiftLeft32;
 wire [31:0] entradaALU2;

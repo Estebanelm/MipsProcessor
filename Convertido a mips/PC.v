@@ -21,7 +21,7 @@ module PC(Clk, Reset, PCNext, PCWrite, PCWriteN, PCResult);
 
 	initial begin
 	
-		PCResult <= 32'h00000000;
+		PCResult <= 32;
 	end
 
     always @(posedge Clk)

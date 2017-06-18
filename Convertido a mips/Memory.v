@@ -26,11 +26,11 @@ module Memory(
     output reg [31:0] MemData
     );
 
-	reg [31:0] block [0:199];
+	reg [31:0] block [0:499];
 
 	integer i = 0;
 	initial begin 
-		for (i=0;i<200;i=i+1)
+		for (i=0;i<500;i=i+1)
 			block[i] <= 32'b0;
 		MemData <= 32'b0;
 	end

@@ -70,7 +70,7 @@ module ALU(
 			end
 		12:
 			begin
-				ALUresult <= !(entradaA|entradaB);
+				ALUresult <= ~(entradaA|entradaB);
 			end
 		default:
 			begin
