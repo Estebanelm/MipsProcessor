@@ -5,7 +5,7 @@
 #$a3: resultado
 #t2: bandera de que se tiene la respuesta
 
-#C骴igos de operaci髇:
+#C贸digos de operaci贸n:
 #1 suma
 #2 resta
 #3 multiplicacion
@@ -49,7 +49,7 @@ esperaoperacion:
 
 esperaop1:
 	lw $t0, 36($zero) #obtiene de memoria la bandera del primer operando
-	beq $t0, $zero, esperaop1 #si sigue en 0, contin鷈 el ciclo
+	beq $t0, $zero, esperaop1 #si sigue en 0, contin煤e el ciclo
 	
 operando1:
 	lw $a0, 33($zero) #obtener primer operando
@@ -76,7 +76,7 @@ procesarop:
 	beq $s5, $a2, opnor #ir a op
 	beq $s6, $a2, opxor #ir a op
 	beq $s7, $a2, opxor #ir a xnor
-	#si no corresponde a ninguna operaci髇, devolver el programa al inicio
+	#si no corresponde a ninguna operaci贸n, devolver el programa al inicio
 	sw $zero, 35($zero) #se devuelve a 0 la operacion
 	sw $zero, 37($zero) #se devuelve a 0 la bandera del op2
 	j esperaoperacion
@@ -92,6 +92,31 @@ resta:
 	j mostrarresultado
 
 multiplicacion:
+	# $v0 - Resultado
+	# $t0 - La m谩scara para el bit derecho
+	# $t1 - El LSB del multiplicador
+
+	addi $v0,$0,0	# Se inicializa el registro del resultado
+	addi $t0,$0,1	# Se inicializa la m谩scara
+	addi $t1,$0,0	# Se inicializa LSB
+
+	Multiplication_loop:
+		beq $a1, $zero, Multiplication_end	# Si el multiplicador es cero finaliza
+		and $t1, $t0, $a1			# Obtiene el LSB
+		beq $t1, 1, Multiplication_do_add	# Si el LSB no es cero, a帽ada el multiplicando al resultado
+		beq $t1, 0, Multiplication_do_shift	# Si el LSB es cero, s贸lo tiene que hacer los cambios
+
+		Multiplication_do_add: 
+			addu $v0, $v0, $a0		
+
+		Multiplication_do_shift:
+			sll $a0, $a0, 1			# Shift left el multiplicando
+			srl $a1, $a1, 1			# Shift right el multiplicador
+
+		j Multiplication_loop			# Hace el loop
+
+	Multiplication_end:
+		addi $a3, $v0, 0 			# Se agrega el resultado a $a3 
 
 division:
 
