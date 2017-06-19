@@ -119,6 +119,22 @@ multiplicacion:
 		addi $a3, $v0, 0 			# Se agrega el resultado a $a3 
 
 division:
+	# $t0 - temporal con resultado de restas
+	# $t1 - temporal
+	# $t2 - temporan que lleva cantidad de restas
+	
+	add $t0, $0, $a0	# Se crea temporal con a0 para restas	 
+	add $t2, $0, 0		# se inicia el contador
+
+	division_loop:
+		sub $t0, $t0, $a1
+		addi $t2, $t2, 1
+		slt $t3, $t0, $a1
+		bne $t3,$zero,division_end 
+		j division_loop			# Hace el loop
+
+	division_end:
+		addi $a3, $t2, 0
 
 sen:
 
