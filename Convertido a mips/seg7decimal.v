@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module seg7decimal(
 
-	input [15:0] x,
+	 input [15:0] x,
     input clk,
     output reg [6:0] seg,
     output reg [3:0] an,

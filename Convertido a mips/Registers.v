@@ -61,12 +61,10 @@ module Registers(Clk, ReadRegister1, ReadRegister2, WriteRegister, WriteData, Re
 		begin
 			Registers[WriteRegister] <= WriteData;
 		end
-	end
-	
-	always @(negedge Clk)
-	begin
-		ReadData1 <= Registers[ReadRegister1];
-		ReadData2 <= Registers[ReadRegister2];
+		else begin
+			ReadData1 <= Registers[ReadRegister1];
+			ReadData2 <= Registers[ReadRegister2];
+		end
 	end
 	
 endmodule	
