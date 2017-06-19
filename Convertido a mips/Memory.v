@@ -46,15 +46,15 @@ module Memory(
 			if (char[15:8] != 8'hF0) begin
 				contador = contador + 1;
 				if (contador == 0) begin
-					block[35] = {24'b000000000000000000000000,char[7:0]};
+					block[35] <= {24'b000000000000000000000000,char[7:0]};
 				end
 				else if (contador == 1) begin
-					block[33] = {24'b000000000000000000000000,char[7:0]};
-					block[36] = 1;
+					block[33] <= {24'b000000000000000000000000,char[7:0]};
+					block[36] <= 1;
 				end
 				else if (contador == 2) begin
-					block[34] = {24'b000000000000000000000000,char[7:0]};
-					block[37] = 1;
+					block[34] <= {24'b000000000000000000000000,char[7:0]};
+					block[37] <= 1;
 				end
 			end
 		else

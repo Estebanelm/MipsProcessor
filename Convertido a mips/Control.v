@@ -61,7 +61,7 @@ module Control(
 		EstadoActual <= Instructionfetch;
 	end
 	
-	always @ (posedge clk or newchar) begin
+	always @ (posedge clk) begin
 			if (newchar)
 				begin
 					PCWriteCond <= 0;

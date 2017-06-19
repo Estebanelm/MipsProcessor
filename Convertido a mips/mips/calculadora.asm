@@ -45,7 +45,7 @@ main:
 esperaoperacion:
 	lw $a2, 35($zero) #obtener la operacion
 	beq $zero, $a2, esperaoperacion #si no hay operacion, mantener ciclo
-	andi $zero, $zero, 0 #devolver la bandera de mostrar respuesta
+	andi $a3, $zero, 0 #devolver la bandera de mostrar respuesta
 
 esperaop1:
 	lw $t0, 36($zero) #obtiene de memoria la bandera del primer operando
