@@ -116,7 +116,8 @@ multiplicacion:
 		j Multiplication_loop			# Hace el loop
 
 	Multiplication_end:
-		addi $a3, $v0, 0 			# Se agrega el resultado a $a3 
+		addi $a3, $v0, 0 			# Se agrega el resultado a $a3
+		j mostrarresultado
 
 division:
 	# $t0 - temporal con resultado de restas
@@ -135,6 +136,7 @@ division:
 
 	division_end:
 		addi $a3, $t2, 0
+		j mostrarresultado
 
 sen:
 
