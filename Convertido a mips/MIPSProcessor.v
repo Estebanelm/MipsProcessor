@@ -166,6 +166,8 @@ Memory Memory(
 	MemWrite,
 	Address,
 	salidaRegisterB,
+	newchar,
+	char,
 	MemData,
 	a3
 );

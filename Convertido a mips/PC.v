@@ -21,7 +21,7 @@ module PC(Clk, Reset, PCNext, PCWrite, PCWriteN, PCResult);
 
 	initial begin
 	
-		PCResult <= 32;
+		PCResult <= 38; //Dirección inicial de la memoria
 	end
 
     always @(posedge Clk)
