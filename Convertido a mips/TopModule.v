@@ -25,6 +25,7 @@
 
 module TopModule(
     input clk,
+	 input rst,
     input PS2_CLK,
     input PS2_DATA,
     output [6:0]SEG,
@@ -34,12 +35,15 @@ module TopModule(
     
 reg CLK50MHZ=0;    
 wire [15:0]keycode;
+wire newchar;
 
 PS2Receiver keyboard(
+clk,
 CLK50MHZ,
 PS2_CLK,
 PS2_DATA,
-keycode
+keycode,
+newchar
 );
 
 seg7decimal sevenSeg(
@@ -47,7 +51,14 @@ keycode,
 clk,
 SEG,
 AN,
-DP 
+DP
+);
+
+MIPSProcessor procesador(
+clk,
+rst,
+newchar,
+keycode[15:0]
 );
 
 

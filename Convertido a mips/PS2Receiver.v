@@ -21,49 +21,41 @@
 
 
 module PS2Receiver(
+	 input clkorig,
     input clk,
     input kclk,
     input kdata,
-    output [15:0] keycodeout
+    output [15:0] keycodeout,
+	 output reg newchar
     );
     
-    
-    wire kclkf, kdataf;
 	 
-	 wire kclkf1, kdataf1;
-	 assign kclkf1 = kclkf;
-	 assign kdataf1 = kdataf;
     reg [7:0]datacur;
     reg [7:0]dataprev;
     reg [3:0]cnt;
     reg [15:0]keycode;
     reg flag;
+	 
+	 assign keycodeout=keycode;
     
     initial begin
         keycode[15:0]<=16'h0000;
         cnt<=4'b0000;
         flag<=1'b0;
+		  newchar = 0;
     end
     
-debouncer debounce(
-    .clk(clk),
-    .I0(kclk),
-    .I1(kdata),
-    .O0(kclkf),
-    .O1(kdataf)
-);
-    
-always@(negedge(kclkf1))begin
+always@(negedge(kclk))begin
     case(cnt)
     0:;//Start bit
-    1:datacur[0]<=kdataf1;
-    2:datacur[1]<=kdataf1;
-    3:datacur[2]<=kdataf1;
-    4:datacur[3]<=kdataf1;
-    5:datacur[4]<=kdataf1;
-    6:datacur[5]<=kdataf1;
-    7:datacur[6]<=kdataf1;
-    8:datacur[7]<=kdataf1;
+    1:datacur[0]<=kdata;
+    2:datacur[1]<=kdata;
+    3:datacur[2]<=kdata;
+    4:datacur[3]<=kdata;
+    5:datacur[4]<=kdata;
+    6:datacur[5]<=kdata;
+    7:datacur[6]<=kdata;
+    8:datacur[7]<=kdata;
     9:flag<=1'b1;
     10:flag<=1'b0;
     
@@ -80,7 +72,13 @@ always @(posedge flag)begin
         dataprev<=datacur;
     end
 end
-    
-assign keycodeout=keycode;
+
+always @ (posedge clk)begin
+	if (dataprev!=datacur && flag==1)
+		newchar <= 1;
+	else
+		newchar <= 0;
+end
+
     
 endmodule
